@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.11.3)
 
+# Add the path of the cmake files to the CMAKE_PRFIX_PATH
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /Users/radhikahd/P0267_RefImpl/Debug)
+
 # Set the C++ standard we will use
 set(CMAKE_CXX_STANDARD 17)
 
@@ -10,7 +13,7 @@ project(OSM_A_star_search)
 
 # Set library output path to /lib
 set(LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/lib")
-
+set(CMAKE_BUILD_TYPE Debug)
 # Locate project prerequisites
 find_package(io2d REQUIRED)
 find_package(Cairo)

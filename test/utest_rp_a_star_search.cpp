@@ -77,7 +77,11 @@ TEST_F(RoutePlannerTest, TestAddNeighbors) {
 
     // Correct h and g values for the neighbors of start_node.
     std::vector<float> start_neighbor_g_vals{0.10671431, 0.082997195, 0.051776856, 0.055291083};
+    //0.0829972 0.106714 0.0552911 0.0517769
     std::vector<float> start_neighbor_h_vals{1.1828455, 1.0998145, 1.0858033, 1.1831238};
+    //1.09981 1.18285  1.18312 1.0858
+    //0,1,2,3
+    //1,0,3,2
     auto neighbors = start_node->neighbors;
     EXPECT_EQ(neighbors.size(), 4);
 
