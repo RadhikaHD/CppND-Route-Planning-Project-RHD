@@ -41,24 +41,16 @@ float RoutePlanner::CalculateHValue(const RouteModel::Node *node) {
 
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 
-    current_node->FindNeighbors();
-    std::cout<<current_node->g_value<<"\n";
-    std::cout<<current_node->neighbors.size()<<"\n";
-    for (auto node : current_node->neighbors)
-    {
-        node->g_value = (current_node->g_value) + (current_node->distance(*node));
-        std::cout<<node->g_value<<"\n";
-        node->h_value = CalculateHValue(node);
-        std::cout<<node->h_value<<"\n";
-        node->parent = current_node;
-        open_list.push_back(node);
-        node->visited = true;
-        //0.0829972 0.106714 0.0552911 0.0517769
-        //0.0552911 1.18312 0.0517769 1.0858
-    }
-
-  
-
+  current_node->FindNeighbors();
+  std::cout << current_node->g_value << "\n";
+  std::cout << current_node->neighbors.size() << "\n";
+  for (auto node : current_node->neighbors) {
+    node->g_value = (current_node->g_value) + (current_node->distance(*node));
+    node->h_value = CalculateHValue(node);
+    node->parent = current_node;
+    open_list.push_back(node);
+    node->visited = true;
+  }
 }
 
 // TODO 5: Complete the NextNode method to sort the open list and return the
@@ -68,7 +60,19 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Remove that node from the open_list.
 // - Return the pointer.
 
-RouteModel::Node *RoutePlanner::NextNode() {}
+bool CompareFValues(RouteModel::Node *a, RouteModel::Node *b) {
+  return (a->g_value + a->h_value) < (b->g_value + b->h_value);
+}
+
+RouteModel::Node *RoutePlanner::NextNode() {
+
+  // std::vector<RouteModel::Node*> open_list;
+  std::sort(open_list.begin(), open_list.end(), CompareFValues);
+  RouteModel::Node* node_w_lowest_sum = *open_list.begin();
+  open_list.erase(open_list.begin());
+  return node_w_lowest_sum;
+
+}
 
 // TODO 6: Complete the ConstructFinalPath method to return the final path found
 // from your A* search. Tips:
