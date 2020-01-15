@@ -68,10 +68,9 @@ RouteModel::Node *RoutePlanner::NextNode() {
 
   // std::vector<RouteModel::Node*> open_list;
   std::sort(open_list.begin(), open_list.end(), CompareFValues);
-  RouteModel::Node* node_w_lowest_sum = *open_list.begin();
+  RouteModel::Node *node_w_lowest_sum = *open_list.begin();
   open_list.erase(open_list.begin());
   return node_w_lowest_sum;
-
 }
 
 // TODO 6: Complete the ConstructFinalPath method to return the final path found
@@ -90,8 +89,22 @@ RoutePlanner::ConstructFinalPath(RouteModel::Node *current_node) {
   // Create path_found vector
   distance = 0.0f;
   std::vector<RouteModel::Node> path_found;
+  RouteModel::Node *parent_node;
 
   // TODO: Implement your solution here.
+  auto iter = path_found.begin();
+  path_found.insert(iter, *current_node);
+
+  while (current_node != start_node) {
+    // a) find parent
+    parent_node = current_node->parent;
+    // b) push parent node in the path found
+    path_found.insert(iter, *parent_node);
+    // c) distance = distance + call distance function (node, parent)
+    distance = distance + current_node->distance(*parent_node);
+    // d) make parent to current
+    current_node = parent_node;
+  }
 
   distance *= m_Model.MetricScale(); // Multiply the distance by the scale of
                                      // the map to get meters.
