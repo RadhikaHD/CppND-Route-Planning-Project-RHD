@@ -42,8 +42,8 @@ float RoutePlanner::CalculateHValue(const RouteModel::Node *node) {
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 
   current_node->FindNeighbors();
-  //std::cout << current_node->g_value << "\n";
-  //std::cout << current_node->neighbors.size() << "\n";
+  // std::cout << current_node->g_value << "\n";
+  // std::cout << current_node->neighbors.size() << "\n";
   for (auto node : current_node->neighbors) {
     node->g_value = (current_node->g_value) + (current_node->distance(*node));
     node->h_value = CalculateHValue(node);
@@ -119,19 +119,23 @@ RoutePlanner::ConstructFinalPath(RouteModel::Node *current_node) {
 // - Store the final path in the m_Model.path attribute before the method exits.
 // This path will then be displayed on the map tile.
 
+// TODO: Implement your solution here.
+
 void RoutePlanner::AStarSearch() {
   RouteModel::Node *current_node = nullptr;
-  AddNeighbors(start_node);
+  start_node->h_value = start_node->distance(*end_node);
+  open_list.push_back(start_node);
+  start_node->visited = true;
   while (open_list.size() > 0) {
     current_node = NextNode();
 
-    if (current_node == end_node)
+    if (current_node == end_node) {
+      std::cout << "constructing final path"
+                << "\n";
+      m_Model.path = ConstructFinalPath(current_node);
       break;
-    else {
+    } else {
       AddNeighbors(current_node);
     }
   }
-
-  m_Model.path = ConstructFinalPath(current_node);
-  // TODO: Implement your solution here.
 }
